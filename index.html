@@ -4,446 +4,207 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="theme-color" content="#201813" />
-  <title>Esencia — Perfumes</title>
+  <meta name="description" content="Descubre perfumes en MagnoStore y realiza tu pedido por WhatsApp." />
+  <title>MagnoStore | Perfumes</title>
   <style>
-    :root {
-      --fondo: #faf7f2;
-      --tinta: #201813;
-      --suave: #776b62;
-      --dorado: #b98550;
-      --claro: #eee5db;
-      --blanco: #fff;
-      --radio: 18px;
-    }
-
-    * { box-sizing: border-box; }
-    body {
-      margin: 0;
-      color: var(--tinta);
-      background: var(--fondo);
-      font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
-    }
-    button, input { font: inherit; }
-    button { cursor: pointer; }
-    .topbar {
-      position: sticky;
-      top: 0;
-      z-index: 10;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 20px;
-      padding: 15px 6%;
-      background: rgba(250,247,242,.96);
-      border-bottom: 1px solid #e8dfd5;
-      backdrop-filter: blur(12px);
-    }
-    .logo { font-family: Georgia, serif; font-size: 25px; font-weight: bold; }
-    .logo span { color: var(--dorado); }
-    nav { display: flex; gap: 8px; flex-wrap: wrap; }
-    nav button, .icon-button {
-      border: 0;
-      background: transparent;
-      color: var(--tinta);
-      padding: 10px 13px;
-      border-radius: 999px;
-    }
-    nav button:hover, nav button.active { background: var(--claro); }
-    .icon-button { border: 1px solid #ded2c6; }
-    main { min-height: 75vh; }
-    .page { display: none; max-width: 1160px; margin: auto; padding: 38px 6% 70px; }
-    .page.active { display: block; }
-    .hero {
-      min-height: 390px;
-      border-radius: 26px;
-      padding: clamp(30px, 7vw, 75px);
-      display: flex;
-      align-items: center;
-      background:
-        linear-gradient(90deg, rgba(32,24,19,.88), rgba(32,24,19,.25)),
-        radial-gradient(circle at 75% 40%, #c89b6e, #59432f 45%, #201813 80%);
-      color: white;
-    }
-    .hero-content { max-width: 560px; }
-    .eyebrow { color: #e4c49f; text-transform: uppercase; letter-spacing: 2px; font-size: 12px; }
-    h1, h2, h3, p { margin-top: 0; }
-    h1 { font-family: Georgia, serif; font-size: clamp(38px, 7vw, 66px); line-height: 1.02; margin: 15px 0; }
-    .hero p { color: #f0e9e1; line-height: 1.7; max-width: 480px; }
-    .button {
-      display: inline-block;
-      border: 0;
-      border-radius: 999px;
-      padding: 13px 20px;
-      background: var(--dorado);
-      color: white;
-      font-weight: 700;
-      text-decoration: none;
-    }
-    .button:hover { filter: brightness(.94); }
-    .button.secondary { background: var(--tinta); }
-    .section-heading {
-      display: flex;
-      align-items: end;
-      justify-content: space-between;
-      gap: 15px;
-      margin: 38px 0 20px;
-    }
-    .section-heading h2, .page-title { font-family: Georgia, serif; font-size: 34px; margin-bottom: 5px; }
-    .muted { color: var(--suave); }
-    .grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 18px; }
-    .product {
-      background: white;
-      border: 1px solid #eee7df;
-      border-radius: var(--radio);
-      overflow: hidden;
-    }
-    .product-art {
-      height: 190px;
-      display: grid;
-      place-items: center;
-      background: linear-gradient(145deg, #eee4d9, #d6bd9f);
-      font-size: 66px;
-    }
-    .product-info { padding: 17px; }
-    .brand { color: var(--dorado); text-transform: uppercase; letter-spacing: 1px; font-size: 11px; font-weight: 800; }
-    .product h3 { margin: 7px 0; font-size: 17px; }
-    .product-bottom { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-top: 14px; }
-    .price { font-weight: 800; font-size: 18px; }
-    .small-button {
-      border: 0;
-      border-radius: 999px;
-      background: var(--tinta);
-      color: white;
-      padding: 9px 13px;
-      font-size: 13px;
-    }
-    .toolbar { display: flex; gap: 12px; flex-wrap: wrap; margin: 20px 0; }
-    .toolbar input, .form input, .search-box {
-      width: 100%;
-      padding: 13px 15px;
-      border: 1px solid #ded5cb;
-      border-radius: 12px;
-      background: white;
-      outline-color: var(--dorado);
-    }
-    .toolbar input { flex: 1 1 220px; }
-    .brand-filters { display: flex; gap: 8px; flex-wrap: wrap; }
-    .filter {
-      border: 1px solid #ded5cb;
-      border-radius: 999px;
-      padding: 10px 14px;
-      background: transparent;
-    }
-    .filter.active { background: var(--tinta); color: white; border-color: var(--tinta); }
-    .panel {
-      max-width: 680px;
-      margin: 18px auto;
-      padding: 28px;
-      background: white;
-      border: 1px solid #eee7df;
-      border-radius: var(--radio);
-    }
-    .form { display: grid; gap: 14px; }
-    .form label { display: grid; gap: 7px; color: var(--suave); font-size: 14px; }
-    .form .button { justify-self: start; }
-    .profile-actions { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 18px; }
-    .faq-item { padding: 17px 0; border-bottom: 1px solid #eee7df; }
-    .faq-item h3 { margin-bottom: 7px; font-size: 17px; }
-    .faq-item p { color: var(--suave); margin-bottom: 0; line-height: 1.6; }
-    .cart-list { display: grid; gap: 12px; margin: 20px 0; }
-    .cart-row { display: flex; justify-content: space-between; align-items: center; gap: 15px; padding: 13px; background: #faf7f2; border-radius: 12px; }
-    .cart-row button { border: 0; color: #9c453d; background: transparent; }
-    .cart-total { font-size: 20px; font-weight: 800; text-align: right; }
-    footer { padding: 28px 6%; background: #201813; color: #eee5db; text-align: center; }
-    footer a { color: #e4c49f; }
-    .notice { margin: 12px 0; color: #4a7650; }
-    .empty { color: var(--suave); padding: 25px 0; }
-    @media (max-width: 850px) { .grid { grid-template-columns: repeat(2, 1fr); } }
-    @media (max-width: 560px) {
-      .topbar { padding: 12px 4%; flex-wrap: wrap; }
-      nav { order: 3; width: 100%; justify-content: space-between; gap: 0; }
-      nav button { padding: 9px 8px; font-size: 13px; }
-      .page { padding: 25px 4% 50px; }
-      .grid { grid-template-columns: 1fr 1fr; gap: 10px; }
-      .product-art { height: 145px; font-size: 50px; }
-      .product-info { padding: 12px; }
-      .product h3 { font-size: 15px; }
-      .small-button { padding: 8px 10px; }
-      .hero { min-height: 350px; }
-      .panel { padding: 21px; }
-    }
+    :root{--bg:#faf7f2;--ink:#201813;--muted:#776b62;--gold:#b98550;--cream:#eee5db;--line:#e8dfd5;--white:#fff;--radius:18px}
+    *{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;color:var(--ink);background:var(--bg);font-family:Arial,Helvetica,sans-serif}button,input,textarea{font:inherit}button{cursor:pointer}a{color:inherit}
+    .topbar{position:sticky;top:0;z-index:10;display:flex;align-items:center;justify-content:space-between;gap:14px;padding:12px 5%;background:rgba(250,247,242,.97);border-bottom:1px solid var(--line);backdrop-filter:blur(10px)}
+    .logo{font:700 25px Georgia,serif;white-space:nowrap}.logo span{color:var(--gold)}nav{display:flex;flex-wrap:wrap;justify-content:center;gap:4px}nav button,.cart-nav{border:0;border-radius:999px;padding:10px 12px;color:var(--ink);background:transparent}nav button.active,nav button:hover{background:var(--cream)}.cart-nav{border:1px solid #ded2c6;white-space:nowrap}
+    main{min-height:70vh}.page{display:none;max-width:1160px;margin:auto;padding:34px 5% 64px}.page.active{display:block}.hero{min-height:365px;display:flex;align-items:center;padding:clamp(26px,7vw,68px);border-radius:26px;color:#fff;background:linear-gradient(90deg,rgba(32,24,19,.9),rgba(32,24,19,.27)),radial-gradient(circle at 75% 40%,#c89b6e,#59432f 45%,#201813 80%)}.hero-content{max-width:570px}.eyebrow{color:#e4c49f;font-size:12px;letter-spacing:2px;text-transform:uppercase}h1,h2{font-family:Georgia,serif}h1{font-size:clamp(36px,7vw,62px);line-height:1.05;margin:14px 0}h2{font-size:31px}.hero p{color:#f0e9e1;line-height:1.7}.page-title{font-size:38px;margin:0 0 8px}.muted{color:var(--muted)}.small{font-size:13px}
+    .button{display:inline-block;border:0;border-radius:999px;padding:13px 19px;color:#fff;background:var(--gold);font-weight:bold;text-decoration:none}.button.dark{background:var(--ink)}.button:hover{filter:brightness(.95)}.button:disabled{opacity:.5;cursor:not-allowed}
+    .section-heading{display:flex;align-items:end;justify-content:space-between;gap:15px;margin:34px 0 17px}.section-heading h2{margin:0 0 5px}.category-cards{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin:22px 0 36px}.category-card{min-height:125px;padding:20px;text-align:left;border:1px solid var(--line);border-radius:var(--radius);color:var(--ink);background:#fff}.category-card strong{display:block;margin-bottom:7px;font:700 23px Georgia,serif}.category-card span{color:var(--muted)}
+    .toolbar{display:flex;flex-wrap:wrap;gap:10px;margin:20px 0}.toolbar input,.form input,.form textarea,.search-box{min-width:0;width:100%;padding:12px 14px;border:1px solid #ded5cb;border-radius:12px;background:#fff;outline-color:var(--gold)}.toolbar input{flex:1 1 240px}.brand-filters{display:flex;flex-wrap:wrap;gap:8px;width:100%}.filter{padding:9px 13px;border:1px solid #ded5cb;border-radius:999px;background:transparent}.filter.active{color:#fff;background:var(--ink);border-color:var(--ink)}
+    .brand-section{margin:32px 0 42px}.brand-heading{display:flex;align-items:center;gap:12px;margin:0 0 16px;padding-bottom:10px;border-bottom:1px solid var(--line);font:700 26px Georgia,serif}.brand-heading span{font:normal 13px Arial,sans-serif;color:var(--muted)}.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:17px}.product{overflow:hidden;border:1px solid #eee7df;border-radius:var(--radius);background:#fff}.image-wrap{position:relative;height:220px;background:linear-gradient(145deg,#eee4d9,#d6bd9f)}.product-image{width:100%;height:100%;display:block;object-fit:contain;padding:12px}.image-placeholder{display:none;width:100%;height:100%;place-items:center;color:#725d49;font-size:58px}.product-info{padding:15px}.brand-label{color:var(--gold);font-size:11px;font-weight:bold;letter-spacing:1px;text-transform:uppercase}.product h3{margin:7px 0;font-size:17px}.product-bottom{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-top:13px}.price{font-weight:bold;font-size:18px}.small-button{border:0;border-radius:999px;padding:9px 13px;color:#fff;background:var(--ink)}.small-button:disabled{opacity:.45;cursor:not-allowed}.stock{margin-top:8px}
+    .panel{max-width:700px;margin:18px auto;padding:24px;border:1px solid #eee7df;border-radius:var(--radius);background:#fff}.form{display:grid;gap:13px}.form label{display:grid;gap:7px;color:var(--muted);font-size:14px}.form textarea{min-height:80px;resize:vertical}.form .button{justify-self:start}.faq-item{padding:16px 0;border-bottom:1px solid #eee7df}.faq-item h3{margin:0 0 7px;font-size:17px}.faq-item p{margin:0;color:var(--muted);line-height:1.6}.cart-list{display:grid;gap:11px;margin:18px 0}.cart-row{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:13px;border-radius:12px;background:var(--bg)}.quantity-control{display:inline-flex;align-items:center;gap:8px;margin-top:6px}.quantity-control button{width:28px;height:28px;border:1px solid #ded5cb;border-radius:50%;background:#fff}.remove-button{border:0;color:#9c453d;background:transparent}.cart-total{text-align:right;font-size:20px;font-weight:bold}.empty{padding:20px 0;color:var(--muted)}.message{min-height:20px;color:#9c453d}footer{padding:26px 5%;color:#eee5db;background:var(--ink);text-align:center}footer a{color:#e4c49f}
+    @media(max-width:850px){.topbar{flex-wrap:wrap;justify-content:center}nav{order:3;width:100%}.grid{grid-template-columns:repeat(2,1fr)}}@media(max-width:560px){.page{padding:24px 4% 45px}.topbar{gap:8px}nav button{padding:8px 7px;font-size:13px}.grid{gap:10px}.image-wrap{height:155px}.product-info{padding:11px}.product h3{font-size:15px}.small-button{padding:8px 9px;font-size:12px}.category-cards{grid-template-columns:1fr}.hero{min-height:330px}.panel{padding:18px}.cart-row{align-items:flex-start}.brand-heading{font-size:22px}}
   </style>
 </head>
 <body>
   <header class="topbar">
-    <div class="logo">esencia<span>.</span></div>
+    <div class="logo">MagnoStore<span>.</span></div>
     <nav aria-label="Navegación principal">
       <button class="nav-button active" data-page="inicio">Inicio</button>
+      <button class="nav-button" data-page="ropa">Ropa</button>
       <button class="nav-button" data-page="perfumes">Perfumes</button>
+      <button class="nav-button" data-page="zapatos">Zapatos</button>
       <button class="nav-button" data-page="perfil">Perfil</button>
       <button class="nav-button" data-page="ayuda">Ayuda</button>
     </nav>
-    <button class="icon-button" id="openCart" aria-label="Ver carrito">🛍️ <span id="cartCount">0</span></button>
+    <button class="cart-nav" id="openCart" aria-label="Abrir carrito">🛍️ Carrito (<span id="cartCount">0</span>)</button>
   </header>
 
   <main>
     <section class="page active" id="inicio">
-      <div class="hero">
-        <div class="hero-content">
-          <div class="eyebrow">Tu aroma, tu esencia</div>
-          <h1>Encuentra el perfume que habla de ti.</h1>
-          <p>Descubre fragancias para cada momento. Elige tus favoritos y haz tu pedido directamente por WhatsApp.</p>
-          <button class="button" data-go="perfumes">Explorar perfumes</button>
-        </div>
+      <div class="hero"><div class="hero-content"><div class="eyebrow">Bienvenido a MagnoStore</div><h1>Encuentra algo especial para ti.</h1><p>Descubre fragancias para cada momento. Por ahora puedes comprar perfumes; pronto agregaremos ropa y zapatos.</p><button class="button" data-go="perfumes">Ver perfumes</button></div></div>
+      <div class="section-heading"><div><h2>Nuestras secciones</h2><p class="muted">Elige una categoría para explorar.</p></div></div>
+      <div class="category-cards">
+        <button class="category-card" data-go="ropa"><strong>Ropa</strong><span>Próximamente</span></button>
+        <button class="category-card" data-go="perfumes"><strong>Perfumes</strong><span>Ver productos disponibles</span></button>
+        <button class="category-card" data-go="zapatos"><strong>Zapatos</strong><span>Próximamente</span></button>
       </div>
-      <div class="section-heading">
-        <div><h2>Favoritos</h2><p class="muted">Una selección para empezar a descubrir.</p></div>
-        <button class="small-button" data-go="perfumes">Ver todos</button>
-      </div>
+      <div class="section-heading"><div><h2>Perfumes destacados</h2><p class="muted">Agrega tus favoritos al carrito y envía el pedido por WhatsApp.</p></div><button class="small-button" data-go="perfumes">Ver todos</button></div>
       <div class="grid" id="featuredProducts"></div>
     </section>
 
+    <section class="page" id="ropa"><h1 class="page-title">Ropa</h1><div class="panel"><h2>Próximamente</h2><p class="muted">Estamos preparando esta sección. Por ahora puedes explorar nuestros perfumes.</p><button class="button" data-go="perfumes">Ver perfumes</button></div></section>
+    <section class="page" id="zapatos"><h1 class="page-title">Zapatos</h1><div class="panel"><h2>Próximamente</h2><p class="muted">Estamos preparando esta sección. Por ahora puedes explorar nuestros perfumes.</p><button class="button" data-go="perfumes">Ver perfumes</button></div></section>
+
     <section class="page" id="perfumes">
-      <h1 class="page-title">Perfumes</h1>
-      <p class="muted">Explora por marca y encuentra tu próxima fragancia.</p>
-      <div class="toolbar">
-        <input id="productSearch" type="search" placeholder="Buscar perfume o marca..." aria-label="Buscar perfume" />
-        <div class="brand-filters" id="brandFilters"></div>
-      </div>
-      <div class="grid" id="productGrid"></div>
+      <h1 class="page-title">Perfumes</h1><p class="muted">Los productos están organizados por marca. Busca una fragancia o selecciona una marca.</p>
+      <div class="toolbar"><input id="productSearch" type="search" placeholder="Buscar perfume o marca..." aria-label="Buscar perfume" /><div class="brand-filters" id="brandFilters"></div></div>
+      <div id="productSections"></div>
     </section>
 
-    <section class="page" id="perfil">
-      <h1 class="page-title">Mi perfil</h1>
-      <div class="panel" id="profilePanel"></div>
-    </section>
-
-    <section class="page" id="ayuda">
-      <h1 class="page-title">Ayuda y preguntas frecuentes</h1>
-      <p class="muted">Escribe una pregunta y te mostraremos la respuesta al instante.</p>
-      <input class="search-box" id="faqSearch" type="search" placeholder="Ej.: ¿cómo hago mi pedido?" aria-label="Buscar una respuesta" />
-      <div id="faqList"></div>
-      <div class="panel">
-        <h2>¿Necesitas ayuda personalizada?</h2>
-        <p class="muted">Escríbenos por WhatsApp y con gusto te atenderemos.</p>
-        <a class="button" href="https://wa.me/584126707872" target="_blank" rel="noopener">Hablar por WhatsApp</a>
-      </div>
-    </section>
-
-    <section class="page" id="carrito">
-      <h1 class="page-title">Tu pedido</h1>
-      <div class="panel">
-        <div id="cartItems"></div>
-        <div class="cart-total" id="cartTotal"></div>
-        <p class="muted" style="margin-top:12px">El pedido se enviará a WhatsApp para confirmar disponibilidad y entrega.</p>
-        <button class="button" id="checkoutButton">Continuar por WhatsApp</button>
-      </div>
-    </section>
+    <section class="page" id="perfil"><h1 class="page-title">Mi perfil</h1><div class="panel" id="profilePanel"></div></section>
+    <section class="page" id="ayuda"><h1 class="page-title">Ayuda y preguntas frecuentes</h1><p class="muted">Busca una pregunta para ver una respuesta al instante.</p><input class="search-box" id="faqSearch" type="search" placeholder="Ej.: ¿cómo hago mi pedido?" aria-label="Buscar una respuesta" /><div id="faqList"></div><div class="panel"><h2>¿Necesitas ayuda?</h2><p class="muted">Escríbenos directamente por WhatsApp.</p><a class="button" href="https://wa.me/584126707872" target="_blank" rel="noopener noreferrer">Hablar por WhatsApp</a></div></section>
+    <section class="page" id="carrito"><h1 class="page-title">Tu pedido</h1><div class="panel"><div id="cartItems"></div><div class="cart-total" id="cartTotal"></div><hr style="border:0;border-top:1px solid #eee7df;margin:22px 0" /><h2>Datos para coordinar</h2><form class="form" id="checkoutForm"><label>Tu nombre<input name="customerName" required autocomplete="name" placeholder="Nombre y apellido" /></label><label>Zona o dirección de entrega<input name="delivery" required autocomplete="street-address" placeholder="Ciudad, zona o dirección" /></label><label>Nota (opcional)<textarea name="note" placeholder="Detalles adicionales del pedido"></textarea></label><p class="muted small">El pedido se enviará por WhatsApp para confirmar disponibilidad, pago y entrega.</p><p class="message" id="checkoutMessage" role="status"></p><button class="button" type="submit">Enviar pedido por WhatsApp</button></form></div></section>
   </main>
 
-  <footer>
-    <p style="margin-bottom:6px">Esencia — Perfumes para cada momento.</p>
-    <small>Pedidos por WhatsApp: <a href="https://wa.me/584126707872" target="_blank" rel="noopener">0412-6707872</a></small>
-  </footer>
+  <footer><p>MagnoStore — Gracias por tu visita.</p><small>Pedidos por WhatsApp: <a href="https://wa.me/584126707872" target="_blank" rel="noopener noreferrer">0412-6707872</a></small></footer>
 
   <script>
-    // Edita aquí los perfumes, marcas, precios y emojis de ejemplo.
+    // Cambia precios y nombres por los de tu tienda. Las fotos irán en la carpeta "imagenes".
+    // Al enviarme las imágenes, las agregamos aquí y las vinculamos con su marca y perfume.
     const products = [
-      { id: 1, name: "Sauvage", brand: "Dior", price: 95, emoji: "🖤" },
-      { id: 2, name: "Miss Dior", brand: "Dior", price: 89, emoji: "🌸" },
-      { id: 3, name: "Good Girl", brand: "Carolina Herrera", price: 105, emoji: "👠" },
-      { id: 4, name: "212 VIP Rosé", brand: "Carolina Herrera", price: 92, emoji: "✨" },
-      { id: 5, name: "Eros", brand: "Versace", price: 88, emoji: "💙" },
-      { id: 6, name: "Bright Crystal", brand: "Versace", price: 82, emoji: "💎" },
-      { id: 7, name: "Acqua di Gio", brand: "Giorgio Armani", price: 99, emoji: "🌊" },
-      { id: 8, name: "My Way", brand: "Giorgio Armani", price: 97, emoji: "🌷" }
+      { id: 1, name: "Sauvage", brand: "Dior", price: 95, image: "imagenes/sauvage.jpg", stock: 10 },
+      { id: 2, name: "Miss Dior", brand: "Dior", price: 89, image: "imagenes/miss-dior.jpg", stock: 8 },
+      { id: 3, name: "Good Girl", brand: "Carolina Herrera", price: 105, image: "imagenes/good-girl.jpg", stock: 6 },
+      { id: 4, name: "212 VIP Rosé", brand: "Carolina Herrera", price: 92, image: "imagenes/212-vip-rose.jpg", stock: 7 },
+      { id: 5, name: "Eros", brand: "Versace", price: 88, image: "imagenes/eros.jpg", stock: 5 },
+      { id: 6, name: "Bright Crystal", brand: "Versace", price: 82, image: "imagenes/bright-crystal.jpg", stock: 4 },
+      { id: 7, name: "Acqua di Gio", brand: "Giorgio Armani", price: 99, image: "imagenes/acqua-di-gio.jpg", stock: 5 },
+      { id: 8, name: "My Way", brand: "Giorgio Armani", price: 97, image: "imagenes/my-way.jpg", stock: 5 }
     ];
-
     const faqs = [
-      { q: "¿Cómo hago un pedido?", a: "Agrega los perfumes al carrito y pulsa “Continuar por WhatsApp”. Te enviaremos el detalle para confirmar tu pedido." },
+      { q: "¿Cómo hago un pedido?", a: "Agrega los perfumes al carrito, completa tus datos y pulsa “Enviar pedido por WhatsApp”." },
       { q: "¿Los precios están en dólares?", a: "Sí. Los precios que aparecen en la tienda están expresados en dólares estadounidenses ($)." },
-      { q: "¿Cómo confirmo disponibilidad y entrega?", a: "Al enviar tu pedido por WhatsApp coordinaremos contigo la disponibilidad, el método de pago y la entrega." },
-      { q: "¿Puedo pedir información sobre un perfume?", a: "Sí, escríbenos por WhatsApp indicando la marca y el nombre del perfume que te interesa." }
+      { q: "¿Cómo confirmo disponibilidad y entrega?", a: "Al recibir tu mensaje coordinaremos contigo la disponibilidad, el pago y la entrega." },
+      { q: "¿Puedo consultar por un perfume?", a: "Sí. Escríbenos por WhatsApp indicando la marca y el nombre del perfume que te interesa." },
+      { q: "¿Puedo pagar desde esta página?", a: "Esta versión no procesa pagos; el método de pago se coordina directamente por WhatsApp." }
     ];
-
-    let cart = JSON.parse(localStorage.getItem("esencia_cart") || "[]");
+    const WHATSAPP_NUMBER = "584126707872";
     let activeBrand = "Todas";
-    let activePage = "inicio";
-
+    let cart = readCart();
     const money = value => "$" + Number(value).toFixed(2);
-    const escapeHTML = value => String(value).replace(/[&<>"']/g, char => ({
-      "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;"
-    }[char]));
+    const escapeHTML = value => String(value).replace(/[&<>"']/g, char => ({ "&":"&amp;", "<":"&lt;", ">":"&gt;", '"':"&quot;", "'":"&#39;" }[char]));
 
+    function readCart() {
+      try {
+        const saved = JSON.parse(localStorage.getItem("magnostore_cart") || "[]");
+        if (!Array.isArray(saved)) return [];
+        return saved.filter(item => products.some(p => p.id === Number(item.id)) && Number(item.quantity) > 0)
+          .map(item => ({ id:Number(item.id), quantity:Math.floor(Number(item.quantity)) }));
+      } catch { return []; }
+    }
     function showPage(page) {
-      activePage = page;
-      document.querySelectorAll(".page").forEach(el => el.classList.toggle("active", el.id === page));
-      document.querySelectorAll(".nav-button").forEach(el => el.classList.toggle("active", el.dataset.page === page));
+      document.querySelectorAll(".page").forEach(section => section.classList.toggle("active", section.id === page));
+      document.querySelectorAll(".nav-button").forEach(button => button.classList.toggle("active", button.dataset.page === page));
       if (page === "carrito") renderCart();
       if (page === "perfil") renderProfile();
-      window.scrollTo({ top: 0, behavior: "smooth" });
+      window.scrollTo({ top:0, behavior:"smooth" });
     }
-
-    document.querySelectorAll(".nav-button").forEach(button =>
-      button.addEventListener("click", () => showPage(button.dataset.page))
-    );
-    document.querySelectorAll("[data-go]").forEach(button =>
-      button.addEventListener("click", () => showPage(button.dataset.go))
-    );
+    document.querySelectorAll(".nav-button").forEach(button => button.addEventListener("click", () => showPage(button.dataset.page)));
+    document.querySelectorAll("[data-go]").forEach(button => button.addEventListener("click", () => showPage(button.dataset.go)));
     document.getElementById("openCart").addEventListener("click", () => showPage("carrito"));
 
     function productCard(product) {
-      return `<article class="product">
-        <div class="product-art" aria-hidden="true">${product.emoji}</div>
-        <div class="product-info">
-          <div class="brand">${escapeHTML(product.brand)}</div>
-          <h3>${escapeHTML(product.name)}</h3>
-          <div class="product-bottom">
-            <span class="price">${money(product.price)}</span>
-            <button class="small-button" onclick="addToCart(${product.id})">Agregar</button>
-          </div>
-        </div>
-      </article>`;
+      const out = Number(product.stock) < 1;
+      return `<article class="product"><div class="image-wrap"><img class="product-image" src="${escapeHTML(product.image)}" alt="${escapeHTML(product.name)} de ${escapeHTML(product.brand)}" loading="lazy"><div class="image-placeholder" aria-hidden="true">🧴</div></div><div class="product-info"><div class="brand-label">${escapeHTML(product.brand)}</div><h3>${escapeHTML(product.name)}</h3><div class="product-bottom"><span class="price">${money(product.price)}</span><button class="small-button" data-add="${product.id}" ${out ? "disabled" : ""}>${out ? "Agotado" : "Agregar"}</button></div><div class="stock muted small">${out ? "No disponible" : "Disponible"}</div></div></article>`;
     }
-
+    function installImageFallbacks(root) {
+      root.querySelectorAll(".product-image").forEach(image => image.addEventListener("error", () => {
+        image.style.display = "none";
+        image.nextElementSibling.style.display = "grid";
+      }, { once:true }));
+    }
     function renderProducts() {
-      const search = document.getElementById("productSearch").value.trim().toLowerCase();
-      const filtered = products.filter(product =>
-        (activeBrand === "Todas" || product.brand === activeBrand) &&
-        (product.name.toLowerCase().includes(search) || product.brand.toLowerCase().includes(search))
-      );
-      document.getElementById("productGrid").innerHTML =
-        filtered.length ? filtered.map(productCard).join("") : '<p class="empty">No encontramos perfumes con esa búsqueda.</p>';
+      const query = document.getElementById("productSearch").value.trim().toLowerCase();
+      const filtered = products.filter(p => (activeBrand === "Todas" || p.brand === activeBrand) && (p.name.toLowerCase().includes(query) || p.brand.toLowerCase().includes(query)));
+      const brands = [...new Set(filtered.map(p => p.brand))];
+      const container = document.getElementById("productSections");
+      if (!filtered.length) { container.innerHTML = '<p class="empty">No encontramos perfumes con esa búsqueda.</p>'; return; }
+      container.innerHTML = brands.map(brand => {
+        const items = filtered.filter(p => p.brand === brand);
+        return `<section class="brand-section"><h2 class="brand-heading">${escapeHTML(brand)} <span>${items.length} ${items.length === 1 ? "perfume" : "perfumes"}</span></h2><div class="grid">${items.map(productCard).join("")}</div></section>`;
+      }).join("");
+      installImageFallbacks(container);
     }
-
     function renderBrandFilters() {
-      const brands = ["Todas", ...new Set(products.map(product => product.brand))];
-      document.getElementById("brandFilters").innerHTML = brands.map(brand =>
-        `<button class="filter ${brand === activeBrand ? "active" : ""}" data-brand="${escapeHTML(brand)}">${escapeHTML(brand)}</button>`
-      ).join("");
-      document.querySelectorAll("[data-brand]").forEach(button => button.addEventListener("click", () => {
-        activeBrand = button.dataset.brand;
-        renderBrandFilters();
-        renderProducts();
-      }));
+      const brands = ["Todas", ...new Set(products.map(p => p.brand))];
+      const container = document.getElementById("brandFilters");
+      container.innerHTML = brands.map(brand => `<button class="filter ${brand === activeBrand ? "active" : ""}" data-brand="${escapeHTML(brand)}">${escapeHTML(brand)}</button>`).join("");
+      container.querySelectorAll("[data-brand]").forEach(button => button.addEventListener("click", () => { activeBrand = button.dataset.brand; renderBrandFilters(); renderProducts(); }));
     }
-
-    function addToCart(id) {
-      const item = cart.find(product => product.id === id);
-      if (item) item.quantity++;
-      else cart.push({ id, quantity: 1 });
-      saveCart();
-      const button = document.getElementById("cartCount");
-      button.textContent = cart.reduce((sum, product) => sum + product.quantity, 0);
-    }
-
     function saveCart() {
-      localStorage.setItem("esencia_cart", JSON.stringify(cart));
-      document.getElementById("cartCount").textContent =
-        cart.reduce((sum, item) => sum + item.quantity, 0);
+      localStorage.setItem("magnostore_cart", JSON.stringify(cart));
+      document.getElementById("cartCount").textContent = cart.reduce((sum, item) => sum + item.quantity, 0);
     }
-
+    function addToCart(id) {
+      const product = products.find(p => p.id === Number(id));
+      if (!product || product.stock < 1) return;
+      const item = cart.find(p => p.id === product.id);
+      if (item) { if (item.quantity >= product.stock) { alert("No hay más unidades disponibles."); return; } item.quantity++; }
+      else cart.push({ id:product.id, quantity:1 });
+      saveCart();
+    }
+    function changeQuantity(id, amount) {
+      const product = products.find(p => p.id === Number(id));
+      const item = cart.find(p => p.id === Number(id));
+      if (!product || !item) return;
+      item.quantity += amount;
+      if (item.quantity <= 0) cart = cart.filter(p => p.id !== Number(id));
+      else if (item.quantity > product.stock) { item.quantity = product.stock; alert("Llegaste al máximo disponible."); }
+      saveCart(); renderCart();
+    }
+    function removeFromCart(id) { cart = cart.filter(p => p.id !== Number(id)); saveCart(); renderCart(); }
     function renderCart() {
       const container = document.getElementById("cartItems");
-      if (!cart.length) {
-        container.innerHTML = '<p class="empty">Tu carrito está vacío. Explora los perfumes para agregar tus favoritos.</p>';
-        document.getElementById("cartTotal").textContent = "";
-        return;
-      }
+      if (!cart.length) { container.innerHTML = '<p class="empty">Tu carrito está vacío. Ve a Perfumes para agregar productos.</p>'; document.getElementById("cartTotal").textContent = ""; return; }
       container.innerHTML = `<div class="cart-list">${cart.map(item => {
-        const product = products.find(p => p.id === item.id);
-        if (!product) return "";
-        return `<div class="cart-row">
-          <div><strong>${escapeHTML(product.name)}</strong><br><span class="muted">${escapeHTML(product.brand)} · ${item.quantity} × ${money(product.price)}</span></div>
-          <div><strong>${money(product.price * item.quantity)}</strong>
-            <button aria-label="Quitar ${escapeHTML(product.name)}" onclick="removeFromCart(${product.id})">Quitar</button>
-          </div>
-        </div>`;
+        const p = products.find(product => product.id === item.id); if (!p) return "";
+        return `<div class="cart-row"><div><strong>${escapeHTML(p.name)}</strong><div class="muted small">${escapeHTML(p.brand)} · ${money(p.price)} cada uno</div><div class="quantity-control"><button type="button" data-change="-1" data-id="${p.id}" aria-label="Reducir">−</button><span>${item.quantity}</span><button type="button" data-change="1" data-id="${p.id}" aria-label="Aumentar">+</button></div></div><div style="text-align:right"><strong>${money(p.price * item.quantity)}</strong><br><button type="button" class="remove-button" data-remove="${p.id}">Quitar</button></div></div>`;
       }).join("")}</div>`;
-      document.getElementById("cartTotal").textContent =
-        "Total: " + money(cart.reduce((sum, item) => {
-          const product = products.find(p => p.id === item.id);
-          return sum + (product ? product.price * item.quantity : 0);
-        }, 0));
+      const total = cart.reduce((sum, item) => { const p = products.find(product => product.id === item.id); return sum + (p ? p.price * item.quantity : 0); }, 0);
+      document.getElementById("cartTotal").textContent = "Total: " + money(total);
     }
-
-    function removeFromCart(id) {
-      cart = cart.filter(item => item.id !== id);
-      saveCart();
-      renderCart();
-    }
-
-    document.getElementById("checkoutButton").addEventListener("click", () => {
-      if (!cart.length) {
-        alert("Agrega al menos un perfume antes de continuar.");
-        return;
-      }
-      const lines = cart.map(item => {
-        const product = products.find(p => p.id === item.id);
-        return `${item.quantity} x ${product.name} (${product.brand}) — ${money(product.price * item.quantity)}`;
-      });
-      const total = cart.reduce((sum, item) => {
-        const product = products.find(p => p.id === item.id);
-        return sum + (product ? product.price * item.quantity : 0);
-      }, 0);
-      const message = `Hola, quiero hacer este pedido:\n${lines.join("\n")}\n\nTotal: ${money(total)}\n\nMi nombre:`;
-      window.open(`https://wa.me/584126707872?text=${encodeURIComponent(message)}`, "_blank", "noopener");
+    document.body.addEventListener("click", event => {
+      const add = event.target.closest("[data-add]"), change = event.target.closest("[data-change]"), remove = event.target.closest("[data-remove]");
+      if (add) addToCart(add.dataset.add);
+      if (change) changeQuantity(change.dataset.id, Number(change.dataset.change));
+      if (remove) removeFromCart(remove.dataset.remove);
     });
-
+    document.getElementById("checkoutForm").addEventListener("submit", event => {
+      event.preventDefault();
+      const messageEl = document.getElementById("checkoutMessage");
+      if (!cart.length) { messageEl.textContent = "Agrega al menos un perfume antes de enviar el pedido."; return; }
+      const data = new FormData(event.currentTarget);
+      const name = String(data.get("customerName")).trim(), delivery = String(data.get("delivery")).trim(), note = String(data.get("note")).trim();
+      if (!name || !delivery) { messageEl.textContent = "Completa tu nombre y zona o dirección."; return; }
+      const lines = cart.map(item => { const p = products.find(product => product.id === item.id); return `${item.quantity} x ${p.name} (${p.brand}) — ${money(p.price * item.quantity)}`; });
+      const total = cart.reduce((sum, item) => { const p = products.find(product => product.id === item.id); return sum + (p ? p.price * item.quantity : 0); }, 0);
+      const message = ["Hola, quiero hacer un pedido en MagnoStore:", "", ...lines, "", `Total: ${money(total)}`, `Nombre: ${name}`, `Zona o dirección: ${delivery}`, note ? `Nota: ${note}` : ""].filter(Boolean).join("\n");
+      window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`, "_blank", "noopener,noreferrer");
+    });
     function renderProfile() {
-      const panel = document.getElementById("profilePanel");
-      const user = JSON.parse(localStorage.getItem("esencia_user") || "null");
+      const panel = document.getElementById("profilePanel"); let user = null;
+      try { user = JSON.parse(localStorage.getItem("magnostore_user") || "null"); } catch { localStorage.removeItem("magnostore_user"); }
       if (user) {
-        panel.innerHTML = `<h2>¡Hola, ${escapeHTML(user.name)}!</h2>
-          <p class="muted">Sesión iniciada en este dispositivo.</p>
-          <p><strong>Correo:</strong> ${escapeHTML(user.email)}</p>
-          <div class="profile-actions">
-            <button class="button secondary" id="logoutButton">Cerrar sesión</button>
-          </div>`;
-        document.getElementById("logoutButton").addEventListener("click", () => {
-          localStorage.removeItem("esencia_user");
-          renderProfile();
-        });
-        return;
+        panel.innerHTML = `<h2>Hola, ${escapeHTML(user.name)}</h2><p class="muted">Correo: ${escapeHTML(user.email)}</p><p class="muted small">Perfil de demostración guardado en este dispositivo.</p><button class="button dark" id="logoutButton">Borrar perfil de este dispositivo</button>`;
+        document.getElementById("logoutButton").addEventListener("click", () => { localStorage.removeItem("magnostore_user"); renderProfile(); }); return;
       }
-      panel.innerHTML = `<h2>Ingresa o crea tu cuenta</h2>
-        <p class="muted">Guarda tus datos en este dispositivo para una experiencia más cómoda.</p>
-        <form class="form" id="profileForm">
-          <label>Nombre<input name="name" required autocomplete="name" placeholder="Tu nombre" /></label>
-          <label>Correo electrónico<input name="email" type="email" required autocomplete="email" placeholder="tu@correo.com" /></label>
-          <label>Contraseña<input name="password" type="password" required minlength="4" autocomplete="new-password" placeholder="Mínimo 4 caracteres" /></label>
-          <button class="button" type="submit">Ingresar / crear perfil</button>
-          <small class="muted">Demo: el perfil se guarda solo en este navegador; no se envía a un servidor.</small>
-        </form>`;
-      document.getElementById("profileForm").addEventListener("submit", event => {
-        event.preventDefault();
-        const formData = new FormData(event.currentTarget);
-        localStorage.setItem("esencia_user", JSON.stringify({
-          name: formData.get("name"),
-          email: formData.get("email")
-        }));
-        renderProfile();
-      });
+      panel.innerHTML = `<h2>Mi perfil</h2><p class="muted">Perfil de demostración: no crea una cuenta en línea ni solicita contraseña.</p><form class="form" id="profileForm"><label>Nombre<input name="name" required autocomplete="name" placeholder="Tu nombre"></label><label>Correo electrónico<input name="email" type="email" required autocomplete="email" placeholder="tu@correo.com"></label><button class="button" type="submit">Guardar perfil en este dispositivo</button></form>`;
+      document.getElementById("profileForm").addEventListener("submit", event => { event.preventDefault(); const data = new FormData(event.currentTarget); localStorage.setItem("magnostore_user", JSON.stringify({name:String(data.get("name")).trim(),email:String(data.get("email")).trim()})); renderProfile(); });
     }
-
     function renderFaqs() {
       const query = document.getElementById("faqSearch").value.trim().toLowerCase();
-      const results = faqs.filter(item =>
-        (item.q + " " + item.a).toLowerCase().includes(query)
-      );
-      document.getElementById("faqList").innerHTML = results.length
-        ? results.map(item => `<article class="faq-item"><h3>${escapeHTML(item.q)}</h3><p>${escapeHTML(item.a)}</p></article>`).join("")
-        : '<p class="empty">No encontramos esa respuesta. Escríbenos por WhatsApp y te ayudaremos.</p>';
+      const matches = faqs.filter(item => (item.q + " " + item.a).toLowerCase().includes(query));
+      document.getElementById("faqList").innerHTML = matches.length ? matches.map(item => `<article class="faq-item"><h3>${escapeHTML(item.q)}</h3><p>${escapeHTML(item.a)}</p></article>`).join("") : '<p class="empty">No encontramos esa respuesta. Escríbenos por WhatsApp.</p>';
     }
-
     document.getElementById("productSearch").addEventListener("input", renderProducts);
     document.getElementById("faqSearch").addEventListener("input", renderFaqs);
-
-    document.getElementById("featuredProducts").innerHTML = products.slice(0, 4).map(productCard).join("");
-    renderBrandFilters();
-    renderProducts();
-    renderFaqs();
-    saveCart();
+    const featured = document.getElementById("featuredProducts"); featured.innerHTML = products.slice(0, 4).map(productCard).join(""); installImageFallbacks(featured);
+    renderBrandFilters(); renderProducts(); renderFaqs(); saveCart();
   </script>
 </body>
 </html>
